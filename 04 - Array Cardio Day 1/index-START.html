@@ -31,28 +31,103 @@
 
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
+      // VERSION 1
+    const fifteenthcentury = inventors.filter(function(inventor){
+      if(inventor.year >=1500 && inventor.year <= 1599) {
+        return true;
+      }
+    }
+    );
+
+    console.log(fifteenthcentury);    // OR
+    console.table(fifteenthcentury);    // this is new to me, and an excellent way to display data
+
+    // VERSION 2: way slimmed down into arrow function
+
+    const fifteenthcentury2 = inventors.filter(inventor => (inventor.year>=1500 && inventor.year<=1599))
+    console.table(fifteenthcentury2);
+
 
     // Array.prototype.map()
-    // 2. Give us an array of the inventors first and last names
+    // 2. Give us an array of the inventors first and last names ***recall map creates a NEW array ***
+  const fullnames = inventors.map(inventor => inventor.first + " " +inventor.last);    // OR `${inventor.first} ${inventor.last}` and the space in the middle is planned in, for such a simple example I prefer old habits of +" "+, but longer phrases better inside backticks
+  console.log(fullnames)
+                          // also notice how the console displays with list number, eg 0: "Albert Enstein" 1:"Isaac Newton" ETC
 
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
+    const orderedlist = inventors.sort(function(first,second){
+        if(first.year > second.year) {
+          return 1;
+        } else {
+         return -1;
+    }
+    });
 
-    // Array.prototype.reduce()
+  console.table(orderedlist);
+
+  
+          // could also be done Ternary fnc:
+
+      const orderedlist2 = inventors.sort((a,b) => a.year > b.year? 1 : -1);
+
+        console.table(orderedlist);
+
+    // Array.prototype.reduce()       // REDUCE: kind of like a big loop, remove the need for variable[i] etc
     // 4. How many years did all the inventors live all together?
 
+  const totalYears = inventors.reduce((total, inventor) => {
+    return total + (inventor.passed - inventor.year);
+  }, 0);  // WHY THIS ZERO? On the first loop total returns 'undefined', this fixes it
+  console.log(totalYears, 'years');      // we get 861
+
+
     // 5. Sort the inventors by years lived
+
+    const oldest = inventors.sort(function(a,b){
+        const lastGuy = a.passed - a.year;
+        const nextGuy = b.passed - b.year;
+        return lastGuy > nextGuy ? -1 : 1;
+    });
+
+    console.table(oldest)
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
 
+//   const category = document.querySelector('.mw-category');
+//    const links = Array.from(category.querySelectorAll('a'));    // querySelector gives us a node list, we need an array, [... ] turns it into an array, the other way to do this is: Array.from(category.querySelectorAll())
+//    const de = links
+//                .map(link => link.textContent)
+//                .filter(streetName => streetName.includes('de')); 
+                // refresh the page, put this code into the console and you get <- undefined
+                // then enter: de , press enter and it gives you the list of bouelvards
+                // as it needs to run in the website, I've commented it out as it shows an error here
 
-    // 7. sort Exercise
+    // 7. sort Exercise 
     // Sort the people alphabetically by last name
+
+    const alpha = people.sort(function(lastOne, nextOne) {
+        const [last, first] = lastOne.split(', ');      // split off the names by the comma dividing them
+        console.log(first, last);     // list the list as first name then last name 
+    });
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+
+    const transportation = data.reduce(function(obj, item) {
+        if(!obj[item]) {
+          obj[item]=0;
+          }
+        obj[item]++;
+        return obj;
+     }, {});
+
+    console.log(transportation);
+
+
+
 
   </script>
 </body>
